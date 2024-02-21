@@ -1,23 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
 
 function App() {
+  const [resource, setResource] = useState('posts');
+  const [items, setItems] = useState([]);
+  
+  useEffect(() => {
+    const apiFetch = async () => {
+      try {
+        const responce = await fetch(`https://jsonplaceholder.typicode.com/${resource}`)
+        const data = await responce.json();
+        console.log(`${resource}`, data);
+        setItems(data);
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    apiFetch();
+  },[resource])
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <button onClick={() => setResource('posts')}>posts</button>
+      <button onClick={() => setResource('users')}>users</button>
+      <button onClick={() => setResource('comments')}>comments</button>
+      <p>{resource}</p> 
+      <ul>
+        {items.map((item) => (
+          //  <li key={item.id}>{item.title || item.name}</li>
+          <li key={item.id}>{JSON.stringify(item)}</li>
+        ))}
+      </ul>
     </div>
   );
 }
