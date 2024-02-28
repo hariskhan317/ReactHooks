@@ -1,14 +1,19 @@
-import './App.css';
-import React, {useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 
 function App() {
   const [number, setNumber] = useState(0);
   const [dark, setDark] = useState(true);
-  const doubleNumber = slowFunction(number);
-  const themestyle = {
-    backgroundColor: dark ? "black" : "white",
-    color: dark ? "white" : " black", 
-  }
+  const doubleNumber = useMemo(() => {slowFunction(number);},[number])
+  const themestyle = useMemo(() => {
+    return {
+      backgroundColor: dark ? "black" : "white",
+      color: dark ? "white" : " black", 
+    }
+  }, [dark])
+
+  useEffect(() => {
+    console.log('theme Changed')
+  },[themestyle])
 
   return (
     <div className="App">
