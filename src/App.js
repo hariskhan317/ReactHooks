@@ -1,23 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useCallback } from "react";
+import GetList from './getList'
+
 
 function App() {
+  const [number, setNumber] = useState(1);
+  const [theme, setTheme] = useState(false)
+  const getItem = useCallback(() => {
+    return [number, number + 1, number + 2];
+  }, [number])
+  function handleTheme() {
+    setTheme(!theme);
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div style={{backgroundColor: theme ? 'pink' : 'green'}} className="App">
+      <input type='number' value={number} onChange={e => setNumber(parseInt(e.target.value))} />
+      <button onClick={handleTheme}>TOGGLE</button>
+      <GetList getItem={getItem} />
     </div>
   );
 }
